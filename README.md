@@ -1,2 +1,2 @@
 # wais-workshop
-[https://wais-workshop.onrender.com/]
+[https://wais-cs-workshop.onrender.com/]
