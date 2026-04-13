@@ -19,7 +19,7 @@ body {
 }
 
 .left-container div {
-    max-width: 70%;
+    width: 70%;
 }
 
 .right-container  {
