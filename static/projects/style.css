@@ -1,0 +1,46 @@
+body {
+    background-color: white;
+    font-family: 'Courier New', Courier, monospace;
+    color: black;
+}
+
+.top-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: auto;
+    width: 100%;
+    z-index: 1;
+    align-items: center;
+}
+
+.top-bar .bucket {
+    top: auto;
+    display: flex;
+    width: auto;
+    height: auto;
+    float: right;
+    align-items: center;
+    height: 100%;
+    font-size: 120%;
+}
+
+.bucket a, h4, button {
+    margin: 7px;
+    padding: 7px;
+}
+
+button {
+    background-color: #3771EE;
+    border: none;
+    color: white;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.container {
+    
+}
