@@ -80,6 +80,11 @@ button {
 }
 
 a {
+    display: none;
     text-decoration: none;
     color: black;
+}
+
+.text-box {
+    display: none;
 }
