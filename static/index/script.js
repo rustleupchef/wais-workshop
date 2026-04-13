@@ -1,4 +1,5 @@
-const text = "Welcome to the WAIS computer science workshop.";
+const texts = ["Welcome to the WAIS computer science workshop.", "Join us in our many assortment of projects."];
+let index = 0;
 let currentText = "";
 
 let toggle = true;
@@ -19,13 +20,14 @@ function write() {
     const writer = document.querySelector(".writer");
 
     if (toggle) {
-        currentText += text[currentText.length];
+        currentText += texts[index][currentText.length];
     } else {
         currentText = currentText.substring(0, currentText.length - 1);
     }
 
-    if (toggle && currentText.length === text.length) {
+    if (toggle && currentText.length === texts[index].length) {
         toggle = false;
+        index = (index + 1) % texts.length;
         pause = true;
     } else if (!toggle && currentText.length === 0) {
         toggle = true;
