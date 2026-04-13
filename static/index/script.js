@@ -1,4 +1,4 @@
-const texts = ["Welcome to the WAIS computer science workshop.", "Join us in our many assortment of projects."];
+const texts = ["Welcome to the WAIS computer science workshop.", "Join us in our many assortments of projects."];
 let index = 0;
 let currentText = "";
 
