@@ -11,7 +11,7 @@ body {
     top: 0;
     width: 50vw;
     height: 100vh;
-    background-color: #3771EE;
+    background-color: #F66978;
     color: white;
     font-size: 2.8vw;
     justify-content: center;
@@ -73,18 +73,8 @@ body {
     padding: 7px;
 }
 
-button {
-    background-color: #3771EE;
-    border: none;
-    color: white;
-}
-
 a {
     display: none;
     text-decoration: none;
     color: black;
-}
-
-.text-box {
-    display: none;
 }
