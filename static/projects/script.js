@@ -11,7 +11,7 @@ async function writeText(element, text, delay) {
     }
 }
 
-async function destroyText(element, delay) {
+async function destroyText(element, t, delay) {
     const text = element.innerHTML;
     for (let i = 0; i < text.length; i++) {
         await sleep(delay / (1 + (.1 * i)));
@@ -20,6 +20,8 @@ async function destroyText(element, delay) {
             element.innerHTML += "_";
         }
     }
+
+    writeText(element, t, delay);
 }
 
 const imagePath = "static/images/photo.jpg"
@@ -36,12 +38,8 @@ async function render(row) {
     const writer = document.querySelector(".writer");
     const textBox = document.querySelector(".text-box");
 
-    await destroyText(writer, 100);
-    await destroyText(textBox, 100);
-
-    writeText(writer, row[0], 100);
-    
-    writeText(textBox, row[1], 100);
+    destroyText(writer, row[0], 100);
+    destroyText(textBox, row[1], 100);
 
     const img = document.querySelector('img');
     console.log(formatImage(row[2]));
