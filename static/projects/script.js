@@ -20,8 +20,6 @@ async function destroyText(element, t, delay) {
             element.innerHTML += "_";
         }
     }
-
-    writeText(element, t, delay);
 }
 
 const imagePath = "static/images/photo.jpg"
@@ -39,7 +37,10 @@ async function render(row) {
     const textBox = document.querySelector(".text-box");
 
     destroyText(writer, row[0], 100);
-    destroyText(textBox, row[1], 100);
+    await destroyText(textBox, row[1], 100);
+
+    writeText(writer, row[0], 100);
+    writeText(textBox, row[1], 100);
 
     const img = document.querySelector('img');
     console.log(formatImage(row[2]));
