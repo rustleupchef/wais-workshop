@@ -18,6 +18,15 @@ body {
     align-items: center;
 }
 
+canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50vw;
+    height: 100vh;
+    background-color: white;
+}
+
 .left-container div {
     width: 70%;
 }
