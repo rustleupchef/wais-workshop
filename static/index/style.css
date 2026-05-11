@@ -18,7 +18,7 @@ body {
     align-items: center;
 }
 
-canvas {
+.container-canvas {
     position: absolute;
     left: 0;
     top: 0;
@@ -45,9 +45,19 @@ canvas {
     justify-content: center;
     align-items: center;
 }
-.right-container div, img {
+.right-container div{
     max-width: 70%;
     margin-bottom: 40px;
+}
+
+.image-wrapper {
+    padding: 0;
+}
+
+.image-wrapper img {
+    display: block;
+    width: 100%;
+    height: auto;
 }
 
 #welcome span {
@@ -92,6 +102,14 @@ a {
     display: none;
     text-decoration: none;
     color: black;
+}
+
+img {
+    opacity: 0;
+}
+
+canvas {
+    z-index: 99999;
 }
 
 .text-box {
