@@ -217,12 +217,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         });
     
-    const img = document.querySelector("img");
-    img.addEventListener("load", async () => { 
-        await imagePixelPopIn(img, 10);
-    });
-
-    const canvas = document.querySelector("canvas");
+        
+        const canvas = document.querySelector("canvas");
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth / 2;
     canvas.height = window.innerHeight;
@@ -244,5 +240,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.addEventListener("click", function () {
         index = (index + 1) % labs.length;
         render(labs[index]);
+    });
+    
+    const img = document.querySelector("img");
+    img.addEventListener("load", async () => { 
+        await imagePixelPopIn(img, 10);
     });
 });
