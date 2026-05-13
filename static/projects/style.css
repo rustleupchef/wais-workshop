@@ -45,9 +45,19 @@ body {
     justify-content: center;
     align-items: center;
 }
-.right-container div, img {
+.right-container div{
     max-width: 70%;
     margin-bottom: 40px;
+}
+
+.image-wrapper {
+    padding: 0;
+}
+
+.image-wrapper img {
+    display: block;
+    width: 100%;
+    height: auto;
 }
 
 #welcome span {
@@ -93,5 +103,9 @@ img {
 }
 
 canvas {
-    z-index: 9999999;
+    z-index: 99999;
+}
+
+.text-box {
+    display: none;
 }
