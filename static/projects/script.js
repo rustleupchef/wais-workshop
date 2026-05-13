@@ -47,6 +47,95 @@ async function render(row) {
     img.src = row.length > 2 ? formatImage(row[2]) : imagePath;
 }
 
+async function imagePixelPopIn(img, pixelSize = 10) {
+    // Set up canvas over the image
+    const canvas = document.createElement('canvas');
+    canvas.width = img.offsetWidth;
+    canvas.height = img.offsetHeight;
+    canvas.style.cssText = `
+    position: absolute;
+    top: 0; left: 0;
+    pointer-events: none;
+  `;
+
+    // Position the wrapper
+    img.parentElement.style.position = 'relative';
+    img.parentElement.appendChild(canvas);
+    img.style.opacity = '0'; // hide real image until done
+
+    const ctx = canvas.getContext('2d');
+
+    // 🔑 Sample the real image colors first
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    function getPixelColor(col, row) {
+        const x = Math.floor(col * pixelSize + pixelSize / 2);
+        const y = Math.floor(row * pixelSize + pixelSize / 2);
+        const i = (y * canvas.width + x) * 4;
+        const [r, g, b, a] = imageData.data.slice(i, i + 4);
+        return `rgba(${r},${g},${b},${a / 255})`;
+    }
+
+    // Build diagonals
+    const cols = Math.ceil(canvas.width / pixelSize);
+    const rows = Math.ceil(canvas.height / pixelSize);
+    const diagonals = [];
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            const d = c + r;
+            if (!diagonals[d]) diagonals[d] = [];
+            diagonals[d].push({ c, r, color: getPixelColor(c, r) });
+        }
+    }
+
+    // Animate
+    await new Promise((resolve) => {
+        const active = [];
+        const duration = 260;
+        const delay = 30;
+        let diagIdx = 0, lastWave = null;
+
+        function easeOutBack(t) {
+            const s = 1.55;
+            return 1 + (s + 1) * Math.pow(t - 1, 3) + s * Math.pow(t - 1, 2);
+        }
+
+        function tick(now) {
+            if (lastWave === null) lastWave = now;
+
+            if (diagIdx < diagonals.length && now - lastWave >= delay) {
+                diagonals[diagIdx].forEach(p => active.push({ ...p, start: now }));
+                diagIdx++;
+                lastWave = now;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let stillGoing = diagIdx < diagonals.length;
+
+            active.forEach(p => {
+                const t = Math.min((now - p.start) / duration, 1);
+                const scale = t < 1 ? easeOutBack(t) : 1;
+                const cx = p.c * pixelSize + pixelSize / 2;
+                const cy = p.r * pixelSize + pixelSize / 2;
+                const s = pixelSize * scale;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(cx - s / 2, cy - s / 2, s, s);
+                if (t < 1) stillGoing = true;
+            });
+
+            stillGoing ? requestAnimationFrame(tick) : resolve();
+        }
+
+        requestAnimationFrame(tick);
+    });
+
+    // Swap canvas for real image
+    img.style.opacity = '1';
+    canvas.remove();
+}
+
 async function pixelPopIn(canvas, ctx, options = {}) {
     const {
         pixelSize = 10,
@@ -113,7 +202,7 @@ async function pixelPopIn(canvas, ctx, options = {}) {
     });
 }
 
-document.addEventListener("DOMContentLoaded", async function() {
+document.addEventListener("DOMContentLoaded", async function () {
     const url = "https://sheets.wais-cshs.workers.dev/Labs";
     fetch(url)
         .then(res => res.json())
@@ -127,6 +216,11 @@ document.addEventListener("DOMContentLoaded", async function() {
                 labs = [["We have no labs yet", "We'll add them to the site when we create our labs. Please be as patient as possible."]]
             }
         });
+    
+    const img = document.querySelector("img");
+    img.addEventListener("load", async () => { 
+        await imagePixelPopIn(img, 10);
+    });
 
     const canvas = document.querySelector("canvas");
     const ctx = canvas.getContext("2d");
@@ -135,7 +229,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     await pixelPopIn(canvas, ctx);
 
     render(labs[index]);
-    
+
     const links = document.querySelectorAll("a");
     links.forEach(link => {
         link.style.display = "block";
@@ -146,8 +240,8 @@ document.addEventListener("DOMContentLoaded", async function() {
     textBox.style.display = "block";
     writeText(textBox, textBox.innerHTML, 100);
 
-    
-    document.addEventListener("click", function() {
+
+    document.addEventListener("click", function () {
         index = (index + 1) % labs.length;
         render(labs[index]);
     });
